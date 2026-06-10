@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>German Study Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────────────── */
+:root {
+  --bg:          #f7f3ec;
+  --bg2:         #eee8dc;
+  --bg3:         #e4ddd1;
+  --surface:     #fdfaf5;
+  --surface2:    #f0ebe0;
+  --border:      #d4c9b5;
+  --border2:     #c0b49e;
+  --text:        #1a1714;
+  --text2:       #4a4440;
+  --text3:       #7a706a;
+  --accent:      #1a4f7a;
+  --accent2:     #2a6fa8;
+  --accent-bg:   #dbeaf7;
+  --accent-text: #1a4f7a;
+  --gold:        #b07d2a;
+  --gold-bg:     #fdf3d8;
+  --red:         #c0392b;
+  --red-bg:      #fde8e6;
+  --green:       #2e7d52;
+  --green-bg:    #e3f5ea;
+  --shadow:      0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,0.12);
+  --radius:      10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+[data-theme="dark"] {
+  --bg:          #12100e;
+  --bg2:         #1c1916;
+  --bg3:         #252220;
+  --surface:     #1e1b18;
+  --surface2:    #2a2723;
+  --border:      #3a3530;
+  --border2:     #4d4740;
+  --text:        #f0ead8;
+  --text2:       #b8ad98;
+  --text3:       #7a7060;
+  --accent:      #5ea8e0;
+  --accent2:     #82c0f0;
+  --accent-bg:   #1a3550;
+  --accent-text: #82c0f0;
+  --gold:        #e0a840;
+  --gold-bg:     #2a2010;
+  --red:         #e85050;
+  --red-bg:      #2a1010;
+  --green:       #50c080;
+  --green-bg:    #102a18;
+  --shadow:      0 2px 12px rgba(0,0,0,0.3);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* ── BASE ────────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;transition:background var(--transition),color var(--transition)}
+body{max-width:900px;margin:0 auto;padding:1.5rem 1rem 4rem}
+
+/* ── HEADER ──────────────────────────────────────────── */
+.hub-header {
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:2rem;padding-bottom:1.25rem;
+  border-bottom:2px solid var(--border);
+  gap:1rem;
+}
+.hub-title { font-family:var(--font-display);font-size:clamp(1.6rem,4vw,2.4rem);color:var(--text);line-height:1.1 }
+.hub-title span { color:var(--accent);font-style:italic }
+.hub-subtitle { font-size:13px;color:var(--text3);margin-top:4px;font-weight:300 }
+
+/* Theme toggle */
+.theme-btn {
+  flex-shrink:0;
+  width:44px;height:44px;border-radius:50%;
+  border:1.5px solid var(--border);
+  background:var(--surface);
+  cursor:pointer;font-size:20px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all var(--transition);
+  box-shadow:var(--shadow);
+}
+.theme-btn:hover{border-color:var(--accent);transform:rotate(20deg)}
+
+/* ── LEVEL STRIP ─────────────────────────────────────── */
+.level-strip {
+  display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap;
+}
+.level-label { font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text3) }
+.level-pill {
+  padding:5px 14px;border-radius:20px;
+  border:1.5px solid var(--border);
+  background:var(--surface);
+  color:var(--text2);font-size:12px;font-weight:500;
+  cursor:pointer;transition:all var(--transition);
+}
+.level-pill:hover{border-color:var(--accent);color:var(--accent)}
+.level-pill.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ── MAIN TABS ───────────────────────────────────────── */
+.tabs {
+  display:flex;gap:4px;margin-bottom:2rem;
+  background:var(--bg2);border-radius:var(--radius-xl);
+  padding:5px;border:1px solid var(--border);
+}
+.tab {
+  flex:1;padding:9px 14px;border-radius:calc(var(--radius-xl) - 4px);
+  border:none;background:transparent;
+  color:var(--text3);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all var(--transition);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  white-space:nowrap;
+}
+.tab:hover{color:var(--text)}
+.tab.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+@media(max-width:500px){.tab{font-size:12px;padding:8px 8px}.tab .tab-icon{display:none}}
+
+/* ── PANELS ──────────────────────────────────────────── */
+.panel{display:none;animation:fadeUp .25s ease}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.level-panel{display:none}.level-panel.active{display:block}
+
+/* ── SECTION ─────────────────────────────────────────── */
+.section{margin-bottom:2.5rem}
+.section-title {
+  font-family:var(--font-display);font-size:1.15rem;color:var(--text);
+  margin-bottom:1rem;padding-bottom:.5rem;
+  border-bottom:1.5px solid var(--border);
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+
+/* ── GRAMMAR LAYOUT ──────────────────────────────────── */
+.grammar-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+.grammar-sidebar {
+  width: 190px;
+  position: sticky;
+  top: 1.5rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  padding-right: 8px;
+}
+.sidebar-header {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+  padding-left: 10px;
+  letter-spacing: 1px;
+}
+.sidebar-level-label {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--accent);
+  margin: 14px 0 6px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+}
+.sidebar-link {
+  font-size: 12px;
+  color: var(--text2);
+  text-decoration: none;
+  padding: 7px 12px;
+  border-radius: 8px;
+  transition: all var(--transition);
+  border-left: 2px solid transparent;
+  line-height: 1.3;
+}
+.sidebar-link:hover {
+  background: var(--bg2);
+  color: var(--text);
+}
+.sidebar-link.active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--accent-bg);
+  font-weight: 600;
+}
+.grammar-content {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 850px) {
+  .grammar-container { flex-direction: column; gap: 1rem; }
+  .grammar-sidebar { 
+    position: static; 
+    width: 100%; 
+    flex-direction: row; 
+    overflow-x: auto; 
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+    max-height: none;
+    scrollbar-width: none;
+  }
+  .grammar-sidebar::-webkit-scrollbar { display: none; }
+  .sidebar-link { white-space: nowrap; border-left: none; border-bottom: 2px solid transparent; border-radius: 0; }
+  .sidebar-link.active { border-left-color: transparent; border-bottom-color: var(--accent); background: transparent; }
+  .sidebar-level-label, .sidebar-header { display: none; }
+}
+
+/* ── BADGES ──────────────────────────────────────────── */
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.3px;font-family:var(--font-body)}
+.badge-info{background:var(--accent-bg);color:var(--accent-text)}
+.badge-warn{background:var(--gold-bg);color:var(--gold)}
+.badge-danger{background:var(--red-bg);color:var(--red)}
+.badge-success{background:var(--green-bg);color:var(--green)}
+
+/* ── RULE CARDS ──────────────────────────────────────── */
+.rule-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:1.1rem 1.25rem;margin-bottom:10px;
+  box-shadow:var(--shadow);
+  transition:border-color var(--transition);
+}
+.rule-card:hover{border-color:var(--border2)}
+.rule-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.rule-title::before{content:'';width:3px;height:14px;background:var(--accent);border-radius:2px;flex-shrink:0}
+.rule-body{font-size:13px;color:var(--text2);line-height:1.75}
+.rule-body p{margin-bottom:4px}
+.rule-body code {
+  background:var(--bg2);
+  padding:2px 7px;border-radius:5px;
+  font-family:'Courier New',monospace;font-size:12px;
+  color:var(--accent2);border:1px solid var(--border);
+}
+
+/* ── TABLES ──────────────────────────────────────────── */
+.table-wrap{overflow-x:auto;margin:10px 0;border-radius:var(--radius);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{background:var(--bg2);padding:7px 10px;text-align:left;font-weight:600;color:var(--text);border-bottom:1.5px solid var(--border)}
+td{padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg2)}
+.hl{color:var(--accent2);font-weight:600}
+
+/* ── VOCAB ───────────────────────────────────────────── */
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
+.filter-btn{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--text3);transition:all var(--transition)}
+.filter-btn:hover{border-color:var(--accent);color:var(--accent)}
+.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:10px}
+.vocab-cat{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin:1.25rem 0 8px;display:flex;align-items:center;gap:6px}
+.vocab-cat::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.vocab-card {
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:.9rem 1rem;
+  cursor:pointer;transition:all var(--transition);
+  position:relative;overflow:hidden;
+}
+.vocab-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  opacity:0;transition:opacity var(--transition);
+}
+.vocab-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.vocab-card:hover::before{opacity:1}
+.vocab-card.flipped{border-color:var(--accent);background:var(--accent-bg)}
+.vocab-card.flipped::before{opacity:1}
+.vocab-de{font-size:15px;font-weight:600;color:var(--text);font-family:var(--font-display)}
+.vocab-en{font-size:12.5px;color:var(--text3);margin-top:2px}
+.vocab-story{font-size:12px;color:var(--text2);margin-top:8px;line-height:1.5;display:none;font-style:italic;padding-top:8px;border-top:1px solid var(--border)}
+.vocab-card.flipped .vocab-story{display:block}
+.vocab-hint{font-size:10.5px;color:var(--text3);margin-top:6px;opacity:.7}
+
+/* ── QUIZ ────────────────────────────────────────────── */
+.quiz-wrapper{max-width:560px;margin:0 auto}
+.quiz-mode-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center}
+.quiz-mode-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text3);margin-right:2px}
+.quiz-mode-btn{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--text3);transition:all var(--transition)}
+.quiz-mode-btn:hover{border-color:var(--accent);color:var(--accent)}
+.quiz-mode-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.quiz-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;font-size:13px;color:var(--text3)}
+.quiz-score-num{font-weight:600;color:var(--accent)}
+.progress-track{height:5px;background:var(--bg2);border-radius:3px;overflow:hidden;margin-bottom:1.75rem;border:1px solid var(--border)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .4s ease}
+
+.quiz-q-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.4rem;margin-bottom:1.25rem;box-shadow:var(--shadow)}
+.quiz-q{font-family:var(--font-display);font-size:1.05rem;color:var(--text);line-height:1.5}
+
+.quiz-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem}
+.quiz-opt{
+  padding:11px 16px;
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  background:var(--surface);
+  cursor:pointer;font-size:13.5px;color:var(--text);
+  text-align:left;transition:all var(--transition);
+  font-family:var(--font-body);
+  display:flex;align-items:center;gap:10px;
+}
+.quiz-opt::before{content:'';width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border);flex-shrink:0;transition:all var(--transition)}
+.quiz-opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-bg);transform:translateX(4px)}
+.quiz-opt:hover:not(:disabled)::before{border-color:var(--accent)}
+.quiz-opt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.quiz-opt.correct::before{background:var(--green);border-color:var(--green)}
+.quiz-opt.wrong{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.quiz-opt.wrong::before{background:var(--red);border-color:var(--red)}
+.quiz-opt:disabled{cursor:default}
+
+.feedback{
+  font-size:13px;padding:10px 14px;border-radius:var(--radius);
+  margin-bottom:1rem;display:none;font-weight:500;
+}
+.feedback.show{display:block;animation:fadeUp .2s ease}
+.feedback.correct{background:var(--green-bg);color:var(--green);border:1px solid var(--green)}
+.feedback.wrong{background:var(--red-bg);color:var(--red);border:1px solid var(--red)}
+
+.quiz-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{
+  padding:9px 20px;border-radius:var(--radius);
+  border:1.5px solid var(--border);background:var(--surface);
+  cursor:pointer;font-size:13px;color:var(--text);
+  font-family:var(--font-body);font-weight:500;
+  transition:all var(--transition);
+}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2);border-color:var(--accent2);color:#fff}
+
+.quiz-done-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:2.5rem 2rem;text-align:center;box-shadow:var(--shadow-lg)}
+.quiz-done-score{font-family:var(--font-display);font-size:3rem;color:var(--accent);margin-bottom:.5rem}
+.quiz-done-msg{font-size:14px;color:var(--text2);margin-bottom:1.5rem}
+
+/* ── CHEAT SHEET ─────────────────────────────────────── */
+.cheat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.cheat-grid{grid-template-columns:1fr}}
+.cheat-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:1rem 1.1rem;
+  box-shadow:var(--shadow);transition:border-color var(--transition);
+  position:relative;
+}
+.cheat-card:hover{border-color:var(--border2)}
+.cheat-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:.6rem;display:flex;align-items:center;gap:6px}
+.cheat-level-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-a12{background:var(--accent)}
+.dot-a13{background:var(--gold)}
+.cheat-card li,.cheat-card p{font-size:12px;color:var(--text2);line-height:1.85}
+.cheat-card ul{padding-left:14px}
+.cheat-card b{color:var(--text);font-weight:600}
+.cheat-card code{font-family:'Courier New',monospace;font-size:11px;background:var(--bg2);padding:1px 5px;border-radius:4px;color:var(--accent2)}
+
+/* ── TIP PILL ────────────────────────────────────────── */
+.tip{
+  background:var(--gold-bg);border:1px solid rgba(176,125,42,.25);
+  border-radius:var(--radius);padding:.65rem 1rem;margin:.75rem 0;
+  font-size:12.5px;color:var(--text2);display:flex;gap:8px;align-items:flex-start;
+}
+.tip-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+
+/* ── SCROLLBAR ───────────────────────────────────────── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hub-header">
+  <div>
+    <h1 class="hub-title">Deutsch <span>A1 mit ÄDK</span></h1>
+    <p class="hub-subtitle">Interactive study hub · Grammar · Vocabulary · Writing · Cheat sheet</p>
+  </div>
+  <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme" id="theme-icon">☀️</button>
+</header>
+
+<!-- MAIN TABS -->
+<nav class="tabs">
+  <button class="tab active" onclick="switchTab('grammar',this)"><span class="tab-icon">📖</span> Grammar</button>
+  <button class="tab" onclick="switchTab('vocab',this)"><span class="tab-icon">🗂</span> Vocabulary</button>
+  <button class="tab" onclick="switchTab('schreiben',this)"><span class="tab-icon">✉️</span> Schreiben</button>
+  <button class="tab" onclick="switchTab('cheat',this)"><span class="tab-icon">🧾</span> Cheat sheet</button>
+</nav>
+
+<!-- ══════════════ GRAMMAR ══════════════ -->
+<div id="panel-grammar" class="panel active">
+<div class="grammar-container">
+  <div class="grammar-sidebar" id="grammar-sidebar">
+    <div class="sidebar-header">Topics Index</div>
+    <!-- Sidebar links will be injected here by JS -->
+  </div>
+  <div class="grammar-content">
+
+<div id="grammar-a12" class="level-panel active">
+
+<div class="section" id="g-imperativ">
+  <div class="section-title">Imperativ (direct commands) <span class="badge badge-warn">key topic</span></div>
+  <div class="rule-card">
+    <div class="rule-title">Verb ALWAYS position 1 — subject position 2</div>
+    <div class="rule-body">
+      <div class="table-wrap"><table>
+        <tr><th>Form</th><th>How to form</th><th>Example</th></tr>
+        <tr><td class="hl">du</td><td>conjugate with du → remove "-st" → drop "du"</td><td><code>Mach!</code> <code>Lauf!</code></td></tr>
+        <tr><td class="hl">ihr</td><td>conjugate with ihr, drop "ihr"</td><td><code>Macht!</code> <code>Lauft!</code></td></tr>
+        <tr><td class="hl">Sie</td><td>conjugate with Sie, KEEP "Sie"</td><td><code>Machen Sie!</code></td></tr>
+      </table></div>
+      <div class="tip"><span class="tip-icon">⚠️</span><span>Verbs ending in <code>-ten</code> add <code>-e</code>: Warte! Arbeite! · Special: sein → <code>Sei!</code> / <code>Seid!</code> / <code>Seien Sie!</code></span></div>
+    </div>
+  </div>
+  <div class="rule-card">
+    <div class="rule-title">Direct vs. Indirect speech</div>
+    <div class="rule-body">
+      <p><b>Direct:</b> <code>Trinken Sie viel!</code></p>
+      <p><b>Indirect:</b> <code>Der Arzt sagt, ich soll viel trinken.</code></p>
+      <p style="margin-top:6px;color:var(--text3)">Indirect = sollen (modal) + infinitive at end</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="g-modal">
+  <div class="section-title">Modal verbs <span class="badge badge-info">position 2 rule</span></div>
+  <div class="rule-card">
+    <div class="rule-body">
+      <p style="margin-bottom:10px">Modal = <strong>position 2</strong>, infinitive = <strong>sentence end</strong><br><code>Ich muss heute noch einkaufen.</code> · <code>Wollen wir zum Yoga gehen?</code></p>
+      <div class="table-wrap"><table>
+        <tr><th></th><th>müssen</th><th>dürfen</th><th>wollen</th><th>können</th><th>sollen</th><th>mögen</th></tr>
+        <tr><td>ich</td><td>muss</td><td>darf</td><td>will</td><td>kann</td><td>soll</td><td>mag</td></tr>
+        <tr><td>du</td><td>musst</td><td>darfst</td><td>willst</td><td>kannst</td><td>sollst</td><td>magst</td></tr>
+        <tr><td>er/sie/es</td><td>muss</td><td>darf</td><td>will</td><td>kann</td><td>soll</td><td>mag</td></tr>
+        <tr><td>wir/Sie</td><td>müssen</td><td>dürfen</td><td>wollen</td><td>können</td><td>sollen</td><td>mögen</td></tr>
+        <tr><td>ihr</td><td>müsst</td><td>dürft</td><td>wollt</td><td>könnt</td><td>sollt</td><td>mögt</td></tr>
+      </table></div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="g-cases">
+  <div class="section-title">Cases: Nominativ · Akkusativ · Dativ</div>
+  <div class="rule-card">
+    <div class="rule-body">
+      <p><strong>Nominativ</strong> = subject / always with verb <code>sein</code></p>
+      <p><strong>Akkusativ</strong> = direct object, after <code>für</code></p>
+      <p><strong>Dativ</strong> = indirect object, after location prepositions</p>
+      <div class="table-wrap" style="margin-top:10px"><table>
+        <tr><th>Article</th><th>Nominativ</th><th>Akkusativ</th><th>Dativ</th></tr>
+        <tr><td>masc.</td><td>der</td><td class="hl">den</td><td class="hl">dem</td></tr>
+        <tr><td>neut.</td><td>das</td><td>das</td><td class="hl">dem</td></tr>
+        <tr><td>fem.</td><td>die</td><td>die</td><td class="hl">der</td></tr>
+        <tr><td>plural</td><td>die</td><td>die</td><td class="hl">den + -n</td></tr>
+      </table></div>
+    </div>
+  </div>
+  <div class="rule-card">
+    <div class="rule-title">Personal pronouns Nominativ → Akkusativ</div>
+    <div class="rule-body"><div class="table-wrap"><table>
+      <tr><th>Nom.</th><th>ich</th><th>du</th><th>er</th><th>sie</th><th>wir</th><th>ihr</th><th>Sie</th></tr>
+      <tr><td>Akk.</td><td class="hl">mich</td><td class="hl">dich</td><td class="hl">ihn</td><td>sie</td><td class="hl">uns</td><td class="hl">euch</td><td>Sie</td></tr>
+    </table></div></div>
+  </div>
+</div>
+
+<div class="section" id="g-wo-wohin">
+  <div class="section-title">Wo / Wohin / Woher <span class="badge badge-danger">Dativ only!</span></div>
+  <div class="rule-card">
+    <div class="rule-body">
+      <div class="table-wrap"><table>
+        <tr><th>Question</th><th>Prepositions</th><th>Example</th></tr>
+        <tr><td class="hl">Wo? (where)</td><td>in, an, bei, auf</td><td><code>Ich bin im Büro.</code></td></tr>
+        <tr><td class="hl">Wohin? (where to)</td><td>zu, in, nach</td><td><code>Ich gehe zur Bank.</code></td></tr>
+        <tr><td class="hl">Woher? (from where)</td><td>aus, von</td><td><code>Ich komme aus Deutschland.</code></td></tr>
+      </table></div>
+      <p style="margin-top:10px"><strong>With Hause:</strong> zu Hause · nach Hause · von zu Hause</p>
+      <p style="margin-top:6px"><strong>Short forms:</strong> zu+der=<code>zur</code> · zu+dem=<code>zum</code> · bei+dem=<code>beim</code> · von+dem=<code>vom</code> · in+dem=<code>im</code></p>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="g-sein-haben">
+
+  <div class="section-title">sein & haben — Präsens + Präteritum</div>
+  <div class="rule-card">
+    <div class="rule-body"><div class="table-wrap"><table>
+      <tr><th></th><th>sein (now)</th><th>sein (past)</th><th>haben (now)</th><th>haben (past)</th></tr>
+      <tr><td>ich</td><td>bin</td><td class="hl">war</td><td>habe</td><td class="hl">hatte</td></tr>
+      <tr><td>du</td><td>bist</td><td class="hl">warst</td><td>hast</td><td class="hl">hattest</td></tr>
+      <tr><td>er/sie</td><td>ist</td><td class="hl">war</td><td>hat</td><td class="hl">hatte</td></tr>
+      <tr><td>wir/Sie</td><td>sind</td><td class="hl">waren</td><td>haben</td><td class="hl">hatten</td></tr>
+      <tr><td>ihr</td><td>seid</td><td class="hl">wart</td><td>habt</td><td class="hl">hattet</td></tr>
+    </table></div></div>
+  </div>
+</div>
+
+<div class="section" id="g-possessive">
+  <div class="section-title">Possessiveartikel</div>
+  <div class="rule-card">
+    <div class="rule-body"><div class="table-wrap"><table>
+      <tr><th>pronoun</th><th>possessive</th><th>pronoun</th><th>possessive</th></tr>
+      <tr><td>ich</td><td class="hl">mein/e</td><td>wir</td><td class="hl">unser/e</td></tr>
+      <tr><td>du</td><td class="hl">dein/e</td><td>ihr</td><td class="hl">euer/eure</td></tr>
+      <tr><td>er/es</td><td class="hl">sein/e</td><td>sie (they)</td><td class="hl">ihr/e</td></tr>
+      <tr><td>sie (she)</td><td class="hl">ihr/e</td><td>Sie (formal)</td><td class="hl">Ihr/e</td></tr>
+    </table></div></div>
+  </div>
+</div>
+
+
+<!-- Körperteile moved to vocabulary (Body parts, A1.2) -->
+
+<!-- Kitchen utensils moved to vocabulary (Kitchen & dining, A1.2) -->
+
+<div class="section" id="g-w-frage">
+  <div class="section-title">W-Frage (Question words)</div>
+  <div class="rule-card">
+    <div class="rule-body"><div class="table-wrap"><table>
+      <tr><th>German</th><th>English</th><th>German</th><th>English</th></tr>
+      <tr><td class="hl">Wer</td><td>who</td><td class="hl">Was</td><td>what</td></tr>
+      <tr><td class="hl">Wen</td><td>whom (Akk.)</td><td class="hl">Wem</td><td>to whom (Dat.)</td></tr>
+      <tr><td class="hl">Wessen</td><td>whose</td><td class="hl">Welche/r/s</td><td>which</td></tr>
+      <tr><td class="hl">Wo</td><td>where</td><td class="hl">Wohin</td><td>where to</td></tr>
+      <tr><td class="hl">Woher</td><td>where from</td><td class="hl">Wann</td><td>when</td></tr>
+      <tr><td class="hl">Wie</td><td>how</td><td class="hl">Wie viel</td><td>how much</td></tr>
+      <tr><td class="hl">Wie viele</td><td>how many</td><td class="hl">Wie lange</td><td>how long</td></tr>
+      <tr><td class="hl">Warum</td><td>why</td><td class="hl">Wieso</td><td>how come</td></tr>
+      <tr><td class="hl">Wofür</td><td>what for</td><td class="hl">Wie spät / Wie viel Uhr</td><td>what time is it</td></tr>
+    </table></div></div>
+  </div>
+</div>
+
+
+
+</div><!-- /grammar-a12 -->
+
+<!-- ── A1.3 Grammar ── -->
+<div id="grammar-a13" class="level-panel active">
+
+<div class="section" id="g-wechsel">
+  <div class="section-title">Wechselpräpositionen <span class="badge badge-warn">Akk. vs. Dativ</span></div>
+  <div class="rule-card">
+    <div class="rule-title">9 preps: in · an · auf · neben · zwischen · über · unter · vor · hinter</div>
+    <div class="rule-body">
+      <div class="table-wrap"><table>
+        <tr><th>Wo? (Dativ)</th><th>Wohin? (Akkusativ)</th></tr>
+        <tr><td><code>im Flur / in der Küche</code></td><td><code>in den Flur / in die Küche</code></td></tr>
+        <tr><td><code>Das Bild hängt an der Wand.</code></td><td><code>Ich hänge das Bild an die Wand.</code></td></tr>
+        <tr><td><code>Das Buch liegt auf dem Tisch.</code></td><td><code>Leg es auf den Tisch.</code></td></tr>
+      </table></div>
+      <div class="tip"><span class="tip-icon">💡</span><span>Position (Dativ) = something IS somewhere. Movement (Akkusativ) = something GOES somewhere.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="g-perfekt">
+  <div class="section-title">Perfekt (Perfect Tense) <span class="badge badge-danger">exam essential</span></div>
+  <div class="rule-card">
+    <div class="rule-title">Formula: haben/sein (pos.2) + Partizip II (end)</div>
+    <div class="rule-body">
+      <p><code>Der Professor <strong>hat</strong> immer gere<strong>det</strong>.</code></p>
+      <p><code>Was <strong>hast</strong> du heute ge<strong>macht</strong>?</code></p>
+      <p><code><strong>Hast</strong> du gestern die Präsentation ge<strong>plant</strong>?</code></p>
+    </div>
+  </div>
+  <div class="rule-card">
+    <div class="rule-title">Partizip II — 5 patterns</div>
+    <div class="rule-body"><div class="table-wrap"><table>
+      <tr><th>Type</th><th>Pattern</th><th>Examples</th></tr>
+      <tr><td>Regular (most)</td><td class="hl">ge…t</td><td>machen→gemacht, lernen→gelernt</td></tr>
+      <tr><td>Irregular</td><td class="hl">ge…en</td><td>trinken→getrunken, sehen→gesehen</td></tr>
+      <tr><td>-ieren (no ge-)</td><td class="hl">…t</td><td>studieren→studiert, telefonieren→telefoniert</td></tr>
+      <tr><td>Trennbar</td><td class="hl">Präfix+ge+…t/en</td><td>anziehen→angezogen, aufstehen→aufgestanden</td></tr>
+      <tr><td>Nicht trennbar (no ge-)</td><td class="hl">…t/en</td><td>bezahlen→bezahlt, verstehen→verstanden</td></tr>
+    </table></div>
+    <div class="tip"><span class="tip-icon">⚠️</span><span>Stem ending in <code>-t</code> or <code>-d</code> adds extra <code>-e</code>: reden→geredet, arbeiten→gearbeitet</span></div>
+    </div>
+  </div>
+  <div class="rule-card">
+    <div class="rule-title">Perfekt with SEIN (movement / change of state)</div>
+    <div class="rule-body"><div class="table-wrap"><table>
+      <tr><th>Infinitiv</th><th>Perfekt</th><th>Infinitiv</th><th>Perfekt</th></tr>
+      <tr><td>fahren</td><td class="hl">ist gefahren</td><td>gehen</td><td class="hl">ist gegangen</td></tr>
+      <tr><td>reisen</td><td class="hl">ist gereist</td><td>kommen</td><td class="hl">ist gekommen</td></tr>
+      <tr><td>aufstehen</td><td class="hl">ist aufgestanden</td><td>bleiben</td><td class="hl">ist geblieben</td></tr>
+      <tr><td>passieren</td><td class="hl">ist passiert</td><td>ankommen</td><td class="hl">ist angekommen</td></tr>
+    </table></div></div>
+  </div>
+</div>
+
+<div class="section" id="g-demonstrativ">
+  <div class="section-title">Demonstrativartikel: dieser / welcher</div>
+  <div class="rule-card">
+    <div class="rule-body"><div class="table-wrap"><table>
+      <tr><th>Gender</th><th>Welch- Nom.</th><th>Welch- Akk.</th><th>Dies- Nom.</th><th>Dies- Akk.</th><th>Dies- Dat.</th></tr>
+      <tr><td>der Mantel</td><td>Welcher?</td><td>Welchen?</td><td class="hl">dieser</td><td class="hl">diesen</td><td class="hl">diesem</td></tr>
+      <tr><td>das Kleid</td><td>Welches?</td><td>Welches?</td><td class="hl">dieses</td><td class="hl">dieses</td><td class="hl">diesem</td></tr>
+      <tr><td>die Jacke</td><td>Welche?</td><td>Welche?</td><td class="hl">diese</td><td class="hl">diese</td><td class="hl">dieser</td></tr>
+      <tr><td>die Schuhe pl.</td><td>Welche?</td><td>Welche?</td><td class="hl">diese</td><td class="hl">diese</td><td class="hl">diesen</td></tr>
+    </table></div>
+    <p style="margin-top:8px"><code>Welchen Mantel trägst du? — Ich kaufe <strong>diesen</strong> Pullover.</code></p>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="g-dativ-verbs">
+  <div class="section-title">Dativ — Verben mit Dativ</div>
+  <div class="rule-card">
+    <div class="rule-body">
+      <p style="margin-bottom:8px">Verbs: <strong>gefallen, stehen, passen, helfen, danken, schmecken</strong></p>
+      <div class="table-wrap"><table>
+        <tr><th>ich</th><th>du</th><th>er/es</th><th>sie</th><th>wir</th><th>ihr</th><th>Sie</th></tr>
+        <tr><td class="hl">mir</td><td class="hl">dir</td><td class="hl">ihm</td><td class="hl">ihr</td><td class="hl">uns</td><td class="hl">euch</td><td class="hl">Ihnen</td></tr>
+      </table></div>
+      <p style="margin-top:8px"><code>Der Pullover gefällt <strong>mir</strong>.</code> · <code>Die Schuhe stehen <strong>ihm</strong> nicht.</code></p>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="g-man-zeit">
+  <div class="section-title">Pronomen Man · Zeitadverb · Konjunktionen</div>
+  <div class="rule-card">
+    <div class="rule-title">Pronomen man</div>
+    <div class="rule-body">
+      <p><code>man</code> = anyone/one/people (3rd person singular conjugation)</p>
+      <p style="margin-top:4px"><code>Man <strong>kann</strong> in der Altstadt spazieren gehen.</code></p>
+      <div class="tip"><span class="tip-icon">💡</span><span><strong>Mann</strong> (capital) = a male person. <strong>man</strong> (lowercase) = indefinite pronoun.</span></div>
+    </div>
+  </div>
+  <div class="rule-card">
+    <div class="rule-title">Zeitadverben word order</div>
+    <div class="rule-body">
+      <p>zuerst → dann → danach → später → zum Schluss</p>
+      <p style="margin-top:6px">Pos.1 = time adverb → Pos.2 = verb → Pos.3 = subject</p>
+      <p><code><strong>Zuerst</strong> wollen sie frühstücken, <strong>dann</strong> machen sie eine Stadttour.</code></p>
+    </div>
+  </div>
+  <div class="rule-card">
+    <div class="rule-title">Konjunktion denn / aber</div>
+    <div class="rule-body">
+      <p><code>denn</code> = because (answers Warum?) — verb stays pos.2 in next clause</p>
+      <p><code>Die Stadt ist toll, <strong>denn</strong> man kann viel machen.</code></p>
+      <p style="margin-top:6px"><code>aber</code> = but · <code>Die Arbeit ist interessant, <strong>aber</strong> anstrengend.</code></p>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="g-time-preps">
+  <div class="section-title">Präpositionen mit Dativ (time) · Fragewörter</div>
+  <div class="rule-card">
+    <div class="rule-body"><div class="table-wrap"><table>
+      <tr><th>Prep.</th><th>Use</th><th>Example</th></tr>
+      <tr><td class="hl">ab</td><td>from a point</td><td>ab dem Moment / ab Montag</td></tr>
+      <tr><td class="hl">an</td><td>on (day)</td><td>am Montag</td></tr>
+      <tr><td class="hl">in</td><td>in (month/season)</td><td>im August / im Sommer</td></tr>
+      <tr><td class="hl">nach</td><td>after</td><td>nach dem Urlaub</td></tr>
+      <tr><td class="hl">seit</td><td>since / for</td><td>seit einer Woche</td></tr>
+      <tr><td class="hl">vor</td><td>before / ago</td><td>vor der Reise</td></tr>
+    </table></div></div>
+  </div>
+  <div class="rule-card">
+    <div class="rule-title">Fragewörter by case</div>
+    <div class="rule-body"><div class="table-wrap"><table>
+      <tr><th>Case</th><th>Person</th><th>Sache</th></tr>
+      <tr><td>Nominativ</td><td class="hl">Wer?</td><td class="hl">Was?</td></tr>
+      <tr><td>Akkusativ</td><td class="hl">Wen?</td><td class="hl">Was?</td></tr>
+      <tr><td>Dativ</td><td class="hl">Wem?</td><td>—</td></tr>
+    </table></div>
+    <p style="margin-top:8px">Also: Wo/Wohin/Woher (place) · Wann/Wie lange (time) · Wie (manner) · Warum (reason)</p>
+    </div>
+  </div>
+</div>
+
+<!-- Wetter vocabulary moved to Vocab (Weather, A1.3) -->
+
+<!-- Clothing moved to vocabulary (Clothing & fashion, A1.3) -->
+
+<!-- Komplimente moved to vocabulary (Compliments & reactions, A1.3) -->
+
+<!-- Kaufhaus / Stockwerke moved to vocabulary (Kaufhaus, A1.3) -->
+
+<!-- Urlaub & Transport moved to vocabulary (Travel & holiday / Transport, A1.3) -->
+
+<!-- Postkarte & Reisebericht moved to Schreiben panel -->
+
+</div><!-- /grammar-a13 -->
+</div><!-- /grammar-content -->
+</div><!-- /grammar-container -->
+</div><!-- /panel-grammar -->
+
+<!-- ══════════════ VOCAB ══════════════ -->
+<div id="panel-vocab" class="panel">
+  <p style="font-size:13px;color:var(--text3);margin-bottom:1.25rem">Tap any card to reveal a memory trick ✨</p>
+  <div class="filter-row" id="vocab-filters"></div>
+  <div id="vocab-container"></div>
+</div>
+
+<!-- ══════════════ SCHREIBEN (WRITING) ══════════════ -->
+<div id="panel-schreiben" class="panel">
+  <div class="section">
+    <div class="section-title">Brief &amp; E-Mail Struktur</div>
+    <div class="rule-card">
+      <div class="rule-body"><div class="table-wrap"><table>
+        <tr><th>Brief</th><th>E-Mail</th></tr>
+        <tr><td>Absender (sender)</td><td>Betreff (subject)</td></tr>
+        <tr><td>Empfänger (recipient)</td><td>Anrede (greeting)</td></tr>
+        <tr><td>Adresse</td><td>Einleitung (intro)</td></tr>
+        <tr><td>Datum</td><td>Hauptteil (main body)</td></tr>
+        <tr><td>Betreff</td><td>Schluss (closing)</td></tr>
+        <tr><td>Salutation · Introduction · Main body · Conclusion</td><td>Greetings</td></tr>
+        <tr><td>Greeting · Signature</td><td>Signature</td></tr>
+      </table></div>
+      <p style="margin-top:8px"><strong>Formal greeting:</strong> <code>Sehr geehrte Frau Winter / Sehr geehrter Herr Schmidt</code></p>
+      <p><strong>Informal greeting:</strong> <code>Liebe Sarah / Lieber Ahmed</code></p>
+      <p style="margin-top:4px"><strong>Closings:</strong> Liebe Grüße · Viele Grüße · Herzliche Grüße · Mit freundlichen Grüßen</p>
+      <div class="tip"><span class="tip-icon">✉️</span><span><strong>Einladung template:</strong> Hallo … / wir machen ein Fest / eine Party. Wir laden dich/euch herzlich ein. Die Party ist am … in … Wir fangen um … an. Kannst du / Könnt ihr … mitbringen? Hoffentlich hast du / habt ihr Zeit!</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="g-useful">
+    <div class="section-title">Useful sentences &amp; phrases</div>
+    <div class="rule-card">
+      <div class="rule-title">Hunger &amp; Thirst</div>
+      <div class="rule-body">
+        <p><code>Ich habe Hunger / Durst.</code> · <code>Ich bin hungrig / durstig.</code></p>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-title">man kann (anyone can)</div>
+      <div class="rule-body">
+        <p><code>man kann</code> = anyone can (uses 3rd person singular like er/sie)</p>
+        <p><code>Man kann selbst Essen mitbringen.</code> = Anyone can bring food themselves.</p>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-title">Formulieren Sie Bitten (Making requests)</div>
+      <div class="rule-body">
+        <p><code>Bringen Sie mir einen Löffel bitte.</code> (Imperativ)</p>
+        <p><code>Können Sie mir … bringen?</code> (Imperativ + Modalverb)</p>
+        <p><code>Kann ich … haben?</code> (Modalverb)</p>
+        <p style="margin-top:6px"><code>Hast du Lust?</code> = Do you feel like it? / What do you think about that?</p>
+        <p><code>Das nächste Mal</code> = the next time · <code>Ich bitte um Entschuldigung</code> = I apologize</p>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-title">Beim Arzt (At the doctor)</div>
+      <div class="rule-body">
+        <p><strong>Arzt/Ärztin:</strong> <code>Wie geht es Ihnen? / Was tut Ihnen weh? / Haben Sie Schmerzen?</code></p>
+        <p><code>Ich schreibe Ihnen ein Rezept für Tabletten / eine Salbe.</code></p>
+        <p><code>Nehmen Sie die Tabletten vor dem Essen. / Gute Besserung!</code></p>
+        <p style="margin-top:6px"><strong>Patient:</strong> <code>Ich bin krank. / Mir ist schlecht.</code></p>
+        <p><code>Mein Kopf/Hals tut weh. / Meine Augen tun weh.</code></p>
+        <p><code>Ich habe Kopfschmerzen / Halsschmerzen / Bauchschmerzen.</code></p>
+        <p><code>Wie lange muss ich im Bett / zu Hause bleiben? / Darf ich …? / Muss ich …?</code></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="g-telefonieren">
+    <div class="section-title">Telefonieren (Phone calls) <span class="badge badge-danger">exam topic</span></div>
+    <div class="rule-card">
+      <div class="rule-body"><div class="table-wrap"><table>
+        <tr><th>Situation</th><th>Phrases</th></tr>
+        <tr><td class="hl">sich melden</td><td>Guten Tag. / Mein Name ist … / Hier ist … / Sie sprechen mit …</td></tr>
+        <tr><td class="hl">nach einer Person fragen</td><td>Ist Frau/Herr … da? / Kann ich bitte mit Frau/Herrn … sprechen? / Können Sie mich mit Frau/Herrn … verbinden?</td></tr>
+        <tr><td class="hl">etwas fragen</td><td>Kann ich Sie etwas fragen? / Ich habe eine Frage: … / Können Sie mir die Durchwahl von … geben?</td></tr>
+        <tr><td class="hl">nachfragen</td><td>Können Sie das bitte noch einmal sagen? / Entschuldigung, wie bitte? / Können Sie das bitte wiederholen/buchstabieren? / Entschuldigung, das habe ich nicht verstanden.</td></tr>
+        <tr><td class="hl">sich verabschieden</td><td>Vielen/Herzlichen Dank. Auf Wiederhören.</td></tr>
+      </table></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="g-redemittel">
+    <div class="section-title">Redemittel (Useful phrases to memorize)</div>
+    <div class="rule-card">
+      <div class="rule-body">
+        <p>• Wie spät ist es? · Wie viel kostet das? · Wie viele Familienmitglieder haben Sie?</p>
+        <p>• Haben Sie am … Zeit? · Bringen Sie mir … bitte. · Kann ich bitte … haben?</p>
+        <p>• Ja, natürlich. · Oh, Entschuldigung.</p>
+        <p style="margin-top:8px"><strong>Bitten und Fragen:</strong></p>
+        <p><code>Trinken Sie gern Kaffee?</code> (Frage) · <code>Kann ich bitte Kaffee haben?</code> (Bitte)</p>
+        <div class="tip"><span class="tip-icon">📌</span><span>Lernen Sie immer die Redemittel auswendig! (Always memorize the phrases!)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="g-komplimente">
+    <div class="section-title">Komplimente geben vs. darauf reagieren</div>
+    <div class="rule-card">
+      <div class="rule-body">
+        <p><strong>Komplimente geben</strong></p>
+        <ul>
+          <li>Die Jacke steht Ihnen wirklich gut!</li>
+          <li>Das T-Shirt sieht super aus!</li>
+          <li>Die Schuhe passen perfekt zu Ihnen.</li>
+          <li>Das Kleid gefällt mir, es sieht schick aus.</li>
+          <li>Sie sehen heute toll aus!</li>
+        </ul>
+        <p style="margin-top:10px"><strong>darauf reagieren</strong></p>
+        <ul>
+          <li>Dankeschön! Das freut mich.</li>
+          <li>Danke schön! Das ist nett von Ihnen.</li>
+          <li>Sie sehen heute auch toll aus.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Postkarte &amp; Reisebericht (writing)</div>
+    <div class="rule-card">
+      <div class="rule-title">Postkarte structure</div>
+      <div class="rule-body">
+        <p><strong>Left side:</strong> Anrede (e.g. Liebe Tante Rosa, lieber Onkel Gerd) · Grüße · Reisebericht · Ausblick · Schlussformel</p>
+        <p style="margin-top:6px"><strong>Right side:</strong> Briefmarke · Empfänger (Vor- und Nachname) · Straße, Hausnummer · Postleitzahl, Ort · Land</p>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-title">Schreiben — formell / halbformell / informell</div>
+      <div class="rule-body"><div class="table-wrap"><table>
+        <tr><th>Formell (Amt/Chef)</th><th>Halbformell (Lehrer/Kollege)</th><th>Informell (Freunde/Familie)</th></tr>
+        <tr><td>Sehr geehrte Frau … / Sehr geehrter Herr … + Nachname</td><td>Liebe Frau … / Lieber Herr … + Nachname</td><td>Guten Morgen, Liebe … / Lieber … + Vorname</td></tr>
+        <tr><td>Mit freundlichen Grüßen (Vor- und Nachname)</td><td>Viele Grüße (Vor- und Nachname)</td><td>Viele / Liebe Grüße (Vorname)</td></tr>
+      </table></div>
+      <div class="tip"><span class="tip-icon">✏️</span><span><strong>Tipps zum Schreiben:</strong> 1. Die Aufgabe gut lesen · 2. Ist es eine E-Mail oder ein normaler Text? · 3. Anrede wählen · 4. Gruß · 5. Unterschrift (formell: Vor- und Nachname; informell: Vorname)</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ CHEAT SHEET ══════════════ -->
+<div id="panel-cheat" class="panel">
+  <div class="filter-row" style="margin-bottom:1.5rem">
+    <button class="filter-btn active" onclick="filterCheat('all',this)">All</button>
+    <button class="filter-btn" onclick="filterCheat('a12',this)">A1.2</button>
+    <button class="filter-btn" onclick="filterCheat('a13',this)">A1.3</button>
+  </div>
+  <div class="cheat-grid" id="cheat-grid">
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Imperativ — 3 forms</div>
+    <ul><li>du: <b>Mach!</b> (remove -st, drop du)</li><li>ihr: <b>Macht!</b> (drop ihr)</li><li>Sie: <b>Machen Sie!</b> (keep Sie)</li><li>sein: Sei! / Seid! / Seien Sie!</li><li>-ten verbs add -e: Warte! Arbeite!</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Modal verb word order</div>
+    <ul><li>Modal = position 2, Infinitiv = END</li><li>Ich <b>muss</b> heute einkaufen <b>gehen</b>.</li><li>Yes/no: modal first → <b>Kannst</b> du kommen?</li><li>nicht dürfen = not allowed</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Cases quick rule</div>
+    <ul><li>Nominativ: subject / after sein</li><li>Akkusativ: direct object / nach für</li><li>Dativ: after location prepositions</li><li>der→dem · das→dem · die→der · die(pl)→den+n</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Wo / Wohin / Woher</div>
+    <ul><li>Wo? → im, in der, beim</li><li>Wohin? → zum, zur, nach</li><li>Woher? → vom, aus, von</li><li>zu Hause · nach Hause · von zu Hause</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Telling time</div>
+    <ul><li>Official: Es ist 14 Uhr 30.</li><li>halb zwölf = 11:30 (half BEFORE twelve)</li><li>viertel vor = quarter before</li><li>viertel nach = quarter after</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Email structure</div>
+    <ul><li>Formal: Sehr geehrte/r + Nachname</li><li>Informal: Liebe/r + Vorname</li><li>Formal close: Mit freundlichen Grüßen</li><li>Informal close: Liebe / Herzliche Grüße</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Patient / Arzt</div>
+    <ul><li>Ich bin krank. / Mir ist schlecht.</li><li>Mein Kopf tut weh. (tut = singular)</li><li>Meine Augen tun weh. (tun = plural)</li><li>Nehmen Sie Tabletten vor dem Essen.</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Possessiveartikel</div>
+    <ul><li>ich → mein/e · du → dein/e</li><li>er → sein/e · sie → ihr/e</li><li>wir → unser/e · ihr → euer/eure</li><li>Sie → Ihr/e</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Wechselpräpositionen</div>
+    <ul><li>in, an, auf, neben, zwischen, über, unter, vor, hinter</li><li>Wo? (position) → <b>Dativ</b></li><li>Wohin? (movement) → <b>Akkusativ</b></li><li>Ich stelle es <b>in den</b> Flur. (Akk.)</li><li>Es steht <b>im</b> Flur. (Dat.)</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Perfekt formula</div>
+    <ul><li>haben/sein (pos.2) + Partizip II (end)</li><li>Regular: ge + stem + <b>t</b> (gemacht)</li><li>Irregular: ge + stem change + <b>en</b> (getrunken)</li><li>-ieren: no ge-, just …t (studiert)</li><li>trennbar: an+ge+zogen = angezogen</li><li>nicht trennbar: no ge- (bezahlt)</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Sein-Verben (not haben!)</div>
+    <ul><li>fahren→gefahren · gehen→gegangen</li><li>kommen→gekommen · bleiben→geblieben</li><li>reisen→gereist · aufstehen→aufgestanden</li><li>passieren→passiert · ankommen→angekommen</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Demonstrativartikel dieser</div>
+    <ul><li>der → dieser (Nom) / diesen (Akk) / diesem (Dat)</li><li>das → dieses (Nom/Akk) / diesem (Dat)</li><li>die → diese (Nom/Akk) / dieser (Dat)</li><li>Welchen Mantel? — Diesen hier.</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Dativ verbs + pronouns</div>
+    <ul><li>gefallen, stehen, passen, helfen, danken</li><li>ich→mir · du→dir · er→ihm · sie→ihr</li><li>wir→uns · ihr→euch · Sie→Ihnen</li><li>Die Jacke passt <b>ihr</b> nicht.</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Zeitadverben + conjunctions</div>
+    <ul><li>zuerst → dann → danach → später → zum Schluss</li><li>Time adverb pos.1 → verb still pos.2!</li><li>denn = because (no verb shift)</li><li>aber = but (no verb shift)</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Kleidergeschäft phrases</div>
+    <ul><li>Die Jacke steht Ihnen wirklich gut!</li><li>Das Kleid sieht schick aus.</li><li>Dankeschön! Das freut mich.</li><li>Entschuldigung, wo finde ich…?</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Telefonieren phrases</div>
+    <ul><li>Guten Tag. Mein Name ist… / Hier ist…</li><li>Ist Frau/Herr… da?</li><li>Könnten Sie das bitte wiederholen?</li><li>Auf Wiederhören.</li></ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Körperteile (body parts)</div>
+    <ul>
+      <li>der Kopf · der Hals · der Arm · die Hand</li>
+      <li>das Bein · der Fuß · das Knie · der Rücken</li>
+      <li>der Bauch · der Finger</li>
+      <li>das Gesicht: das Haar · die Nase · das Ohr · der Zahn · das Auge · der Mund</li>
+      <li><b>tut weh</b> (singular) / <b>tun weh</b> (plural)</li>
+    </ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>W-Fragen (question words)</div>
+    <ul>
+      <li>Wer (who) · Wen (whom Akk.) · Wem (to whom Dat.)</li>
+      <li>Was (what) · Welche/r/s (which) · Wessen (whose)</li>
+      <li>Wo (where) · Wohin (where to) · Woher (from where)</li>
+      <li>Wann (when) · Wie (how) · Warum (why) · Wieso (how come)</li>
+      <li>Wie viel (how much) · Wie viele (how many) · Wofür (what for)</li>
+      <li>Wie spät / Wie viel Uhr? (what time?)</li>
+    </ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Brief &amp; E-Mail</div>
+    <ul>
+      <li><b>Brief:</b> Absender · Empfänger · Adresse · Datum · Betreff · Anrede · Einleitung · Hauptteil · Schluss · Gruß · Unterschrift</li>
+      <li><b>E-Mail:</b> Betreff · Anrede · Einleitung · Hauptteil · Schluss · Gruß · Unterschrift</li>
+      <li>Formal: <b>Sehr geehrte/r …</b> → Mit freundlichen Grüßen</li>
+      <li>Informal: <b>Liebe/r …</b> → Liebe / Herzliche Grüße</li>
+    </ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Beim Arzt — key phrases</div>
+    <ul>
+      <li>Ich bin krank. / Mir ist schlecht.</li>
+      <li>Mein Kopf tut weh. / Meine Augen tun weh.</li>
+      <li>Ich habe Kopf-/Hals-/Bauchschmerzen.</li>
+      <li>Darf ich …? / Wie lange muss ich im Bett bleiben?</li>
+      <li>Gute Besserung! (Get well soon!)</li>
+    </ul>
+  </div>
+
+  <div class="cheat-card" data-level="a12">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a12"></span>Kitchen utensils</div>
+    <ul>
+      <li>das Glas (glass) · die Gabel (fork)</li>
+      <li>das Messer (knife) · der Löffel (spoon)</li>
+      <li>die Tasse (cup) · der Teller (plate)</li>
+      <li>die Serviette (napkin) · die Speisekarte (menu)</li>
+    </ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>New A1.3 verbs</div>
+    <ul>
+      <li>ziehen (move/pull) · zeigen (show) · aussehen (look like)</li>
+      <li>kennenlernen (get to know) · bewerben (apply)</li>
+      <li>tragen/anhaben (wear) · anprobieren (try on)</li>
+      <li>stehen (suit someone) · passen (fit)</li>
+      <li>einsteigen / aussteigen / umziehen</li>
+    </ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Wetter (Weather)</div>
+    <ul>
+      <li>Es ist sonnig / bewölkt / windig / neblig / kühl / kalt / warm.</li>
+      <li>Es regnet. · Es schneit. · Die Sonne scheint.</li>
+      <li>Es sind X Grad. (plus/minus X Grad)</li>
+      <li>der Wind · die Wolke · der Regen · der Schnee · der Nebel</li>
+    </ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Kleidung &amp; Farben</div>
+    <ul>
+      <li>der Anzug · die Bluse · das Hemd · die Hose · die Jacke · das Kleid</li>
+      <li>der Mantel · der Rock · die Schuhe · die Stiefel · der Pullover · die Mütze</li>
+      <li>Farben: schwarz · weiß · rot · blau · grün · gelb · grau · braun · lila · orange</li>
+    </ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Jobs &amp; Tätigkeiten</div>
+    <ul>
+      <li>Kellner/in: Essen servieren · Künstler/in: Bilder malen</li>
+      <li>Architekt/in: Baustelle planen · Erzieher/in: Kinder betreuen</li>
+      <li>Informatiker/in: Programme entwickeln</li>
+      <li>Die Arbeit macht Spaß / ist anstrengend / interessant.</li>
+    </ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Im Kaufhaus — Stockwerke</div>
+    <ul>
+      <li>Untergeschoss → Erdgeschoss → ersten Stock → Dachgeschoss</li>
+      <li>Entschuldigung, wo finde ich …? / Haben Sie …?</li>
+      <li>Das gibt es im dritten Stock. / Tut mir leid, das haben wir nicht.</li>
+    </ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Postkarte &amp; Schreiben (3 levels)</div>
+    <ul>
+      <li><b>Formell:</b> Sehr geehrte/r … → Mit freundlichen Grüßen + Vor+Nachname</li>
+      <li><b>Halbformell:</b> Liebe/r … (Nachname) → Viele Grüße + Vor+Nachname</li>
+      <li><b>Informell:</b> Liebe/r … (Vorname) → Liebe/Viele Grüße + Vorname</li>
+      <li>Postkarte: Anrede · Grüße · Reisebericht · Ausblick · Schlussformel</li>
+    </ul>
+  </div>
+
+  <div class="cheat-card" data-level="a13">
+    <div class="cheat-title"><span class="cheat-level-dot dot-a13"></span>Urlaub — Reisegepäck</div>
+    <ul>
+      <li>das Zelt · der Schlafsack · das Handtuch · die Seife · der Helm</li>
+      <li>die Sonnencreme · die Sonnenbrille · die Regenjacke · der Regenschirm</li>
+      <li>einsteigen / aussteigen / umsteigen</li>
+      <li>die Haltestelle · die Ankunft · die Abfahrt · der Eingang / Ausgang</li>
+    </ul>
+  </div>
+
+  </div>
+</div>
+
+</div><!-- body -->
+
+<script>
+// ── THEME ────────────────────────────────────────────
+const icons={light:'☀️',dark:'🌙'};
+let darkMode=false;
+function toggleTheme(){
+  darkMode=!darkMode;
+  document.documentElement.setAttribute('data-theme',darkMode?'dark':'light');
+  document.getElementById('theme-icon').textContent=darkMode?icons.dark:icons.light;
+}
+
+// ── TABS ─────────────────────────────────────────────
+function switchTab(name,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+}
+
+// ── LEVEL ────────────────────────────────────────────
+let currentLevel='both';
+
+// ── GRAMMAR INDEX ────────────────────────────────────
+function updateGrammarIndex() {
+  const sidebar = document.getElementById('grammar-sidebar');
+  if(!sidebar) return;
+  sidebar.innerHTML = '<div class="sidebar-header">Topics Index</div>';
+  
+  const activePanels = document.querySelectorAll('.level-panel.active');
+  activePanels.forEach(panel => {
+    const levelLabel = panel.id === 'grammar-a12' ? 'A1.2 Grammar' : 'A1.3 Grammar';
+    const labelDiv = document.createElement('div');
+    labelDiv.className = 'sidebar-level-label';
+    labelDiv.textContent = levelLabel;
+    sidebar.appendChild(labelDiv);
+    
+    const sections = panel.querySelectorAll('.section');
+    sections.forEach(sec => {
+      const titleEl = sec.querySelector('.section-title');
+      if(!titleEl) return;
+      // Get text but remove badge content
+      let title = titleEl.childNodes[0].textContent.trim();
+      const link = document.createElement('a');
+      link.href = '#' + sec.id;
+      link.className = 'sidebar-link';
+      link.textContent = title;
+      link.onclick = (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      sidebar.appendChild(link);
+    });
+  });
+}
+
+// ── CHEAT ────────────────────────────────────────────
+function filterCheat(lvl,btn){
+  document.querySelectorAll('#panel-cheat .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.cheat-card').forEach(c=>{
+    c.style.display=(lvl==='all'||c.dataset.level===lvl)?'':'none';
+  });
+}
+
+// ── VOCAB DATA ───────────────────────────────────────
+const vocabData=[
+  {cat:'Daily actions',level:'a12',words:[
+    {de:'duschen',en:'to shower',story:'🚿 Push a button (du-SCHEN) → water pours.'},
+    {de:'frühstücken',en:'to have breakfast',story:'🍳 früh = early + Stücke = pieces. Early pieces of bread = breakfast!'},
+    {de:'aufwachen',en:'to wake up',story:'⏰ auf = up + wachen = watch. Wake UP to stand guard.'},
+    {de:'schlafen',en:'to sleep',story:'😴 A sheep says "schlaaaf" as it falls asleep.'},
+    {de:'essen',en:'to eat',story:'🍽️ Almost like English "eating". Essen!'},
+    {de:'trinken',en:'to drink',story:'🥤 Sounds just like English "drink".'},
+  ]},
+  {cat:'Body & health',level:'a12',words:[
+    {de:'wehtun',en:'to hurt',story:'😣 "weh" sounds like "OW!" — tut weh = it hurts.'},
+    {de:'Schmerzen',en:'pains (plural)',story:'💊 SCHMERZEN is a villain who brings all pain!'},
+    {de:'Verband',en:'bandage',story:'🩹 A BAND holding the wound together.'},
+    {de:'verletzt',en:'injured',story:'🤕 You fell LAST (ver-LETZT) and got injured.'},
+    {de:'gesund',en:'healthy',story:'💪 GE-SOUND body = healthy body.'},
+    {de:'untersuchen',en:'to examine',story:'🔍 unter = under + suchen = search. Doctor searches under skin.'},
+  ]},
+  {cat:'Technology',level:'a12',words:[
+    {de:'hochladen',en:'to upload',story:'⬆️ hoch = high. Load it HIGH up to the cloud!'},
+    {de:'runterladen',en:'to download',story:'⬇️ runter = down. Load it DOWN from internet.'},
+    {de:'Computer hochfahren',en:'to boot up',story:'🖥️ The computer DRIVES itself UP when starting.'},
+    {de:'Computer herunterfahren',en:'to shut down',story:'💤 The computer DRIVES DOWN to sleep.'},
+    {de:'kaputt',en:'broken',story:'💥 Identical to English "kaput" — just sounds broken!'},
+    {de:'Akku',en:'battery',story:'🔋 Akkumulator — accumulates energy.'},
+  ]},
+  {cat:'Places & social',level:'a12',words:[
+    {de:'die Kneipe',en:'the pub',story:'🍺 KNEEping on the floor = too much Kneipe!'},
+    {de:'der Biergarten',en:'beer garden',story:'🌿 Bier + Garten = beer garden. Done!'},
+    {de:'das Kaffeehaus',en:'coffee house',story:'☕ Kaffee + Haus. Visit for your Kaffee!'},
+    {de:'die Verabredung',en:'meeting/date',story:'📅 You need lots of words (reden) to arrange one!'},
+  ]},
+  {cat:'Kaufhaus',level:'a13',words:[
+    {de:'das Untergeschoss',en:'basement / lower ground',story:'⬇️ Unter = under; think UNDER the ground.'},
+    {de:'das Erdgeschoss',en:'ground floor',story:'🏠 Erd = earth; the floor at ground level.'},
+    {de:'der erste Stock',en:'first floor',story:'1st floor = der erste Stock.'},
+    {de:'der zweite Stock',en:'second floor',story:'2nd floor = der zweite Stock.'},
+    {de:'das Dachgeschoss',en:'attic / top floor',story:'🏡 Dach = roof; the top floor under the roof.'},
+    {de:'die Abteilung',en:'department (in store)',story:'🛍️ Abteilung = where similar products are grouped.'},
+    {de:'die Kasse',en:'checkout / cash desk',story:'💳 Pay at the Kasse.'},
+    {de:'das Schaufenster',en:'shop window',story:'🪟 Schau + Fenster — look through the shop window.'},
+    {de:'das Angebot',en:'special offer',story:'🏷️ Angebote = sales and offers.'},
+    {de:'der Händler',en:'seller / merchant',story:'Händler = merchant or seller in a store.'},
+    {de:'Einkaufszentrum',en:'shopping mall',story:'Einkaufszentrum = shopping mall with many stores.'},
+  ]},
+  {cat:'Transport',level:'a13',words:[
+    {de:'einsteigen',en:'to get on (a bus/train)',story:'🚌 ein = in + steigen = climb. Climb IN.'},
+    {de:'aussteigen',en:'to get off',story:'🚏 aus = out + steigen = climb. Climb OUT.'},
+    {de:'umsteigen',en:'to transfer / change (trains)',story:'🔁 um = around/change + steigen = transfer.'},
+    {de:'die Ankunft',en:'arrival',story:'✈️ When a train/plane arrives.'},
+    {de:'die Abfahrt',en:'departure',story:'🚆 When a train/plane leaves.'},
+    {de:'die Haltestelle',en:'stop (bus/tram)',story:'🛑 Where the bus stops.'},
+    {de:'der Fahrplan',en:'timetable',story:'📅 Plan for travel times.'},
+    {de:'das Ticket',en:'ticket',story:'🎫 Your pass to travel.'},
+    {de:'die Briefmarke',en:'stamp',story:'✉️ Briefmarke = stamp for postcards and letters.'},
+    {de:'der Zug',en:'train',story:'🚆 The train you take.'},
+    {de:'der Bus',en:'bus',story:'🚌 The bus for local transport.'},
+  ]},
+  {cat:'Telling time',level:'a12',words:[
+    {de:'Es ist acht Uhr fünf',en:'It is 8:05',story:'Official clock time uses Uhr and minutes.'},
+    {de:'halb zwölf',en:'11:30',story:'Half before twelve means 30 minutes before 12.'},
+    {de:'viertel vor drei',en:'2:45',story:'A quarter before three is 15 minutes to three.'},
+    {de:'viertel nach vier',en:'4:15',story:'A quarter after four is 15 minutes past four.'},
+    {de:'Wie spät ist es?',en:'What time is it?',story:'Ask the time with Wie spät or Wie viel Uhr.'},
+    {de:'morgens',en:'in the morning',story:'Morning hours in German: morgens.'},
+    {de:'nachmittags',en:'in the afternoon',story:'Afternoon hours are nachmittags.'},
+    {de:'abends',en:'in the evening',story:'Evening hours are abends.'},
+  ]},
+  {cat:'Body parts',level:'a12',words:[
+    {de:'der Kopf',en:'head',story:'🗣️ Kapitel starts with Kap — your Kopf holds all the chapters!'},
+    {de:'der Hals',en:'neck/throat',story:'🎤 Halsschmerzen = sore throat. Hals = the passage.'},
+    {de:'der Arm',en:'arm',story:'💪 Arm = arm. Same word!'},
+    {de:'die Hand',en:'hand',story:'✋ Sounds like "hand". Easy!'},
+    {de:'das Bein',en:'leg',story:'🦵 Almost like "bone" — your leg has a big bone.'},
+    {de:'der Bauch',en:'belly/stomach',story:'🤰 BAUCH rhymes with "ouch" when it hurts!'},
+    {de:'der Rücken',en:'back',story:'🔙 Rück = back (backward). Der Rücken = your back.'},
+    {de:'das Knie',en:'knee',story:'🦵 Knie ≈ knee. Almost identical!'},
+    {de:'der Fuß',en:'foot',story:'👣 Fußball = football. Same concept!'},
+    {de:'das Auge',en:'eye',story:'👁️ Augenblick = eye-moment. Eyes open!'},
+    {de:'der Mund',en:'mouth',story:'👄 Mundharmonika = mouth organ = harmonica!'},
+    {de:'der Zahn',en:'tooth',story:'🦷 Zahnarzt = tooth doctor = dentist!'},
+  ]},
+  {cat:'Kitchen & dining',level:'a12',words:[
+    {de:'das Glas',en:'glass',story:'🥛 Glas = glass. Same word in English!'},
+    {de:'die Gabel',en:'fork',story:'🍴 Gabel sounds like "grab" — you grab food with it.'},
+    {de:'das Messer',en:'knife',story:'🔪 Messer — knives make a Mess when cutting!'},
+    {de:'der Löffel',en:'spoon',story:'🥄 Löffel — you loop around your bowl with a spoon!'},
+    {de:'die Tasse',en:'cup',story:'☕ Tasse ≈ taste. You taste your drink from a Tasse.'},
+    {de:'der Teller',en:'plate',story:'🍽️ Teller = tell-er. The plate tells you what to eat.'},
+    {de:'die Serviette',en:'napkin',story:'🧻 Serviette = service. A napkin serves to clean you.'},
+    {de:'die Speisekarte',en:'menu',story:'📋 Speise = food + Karte = card. The food card = menu!'},
+  ]},
+  {cat:'Adjectives',level:'both',words:[
+    {de:'pünktlich',en:'on time',story:'⏰ Punkt = point. Hit the exact time POINT.'},
+    {de:'höflich',en:'polite',story:'😊 Court HOFficial is always polite = höflich.'},
+    {de:'gefährlich',en:'dangerous',story:'⚠️ Gefahr = danger. Full of danger.'},
+    {de:'langweilig',en:'boring',story:'🥱 lang = long + Weile = while. Long while = boring.'},
+    {de:'lustig',en:'funny',story:'😂 In German = FUNNY (not like Arabic lustig)!'},
+    {de:'gemütlich',en:'cosy / comfortable',story:'☕ Gemütlich — sounds like "gem" — precious cosy feeling!'},
+    {de:'hässlich',en:'ugly',story:'😬 Hässlich — "hassle-ish" — ugly things are a hassle to look at.'},
+    {de:'günstig',en:'cheap / affordable',story:'💰 Günstig — "gun-stick" price — cheap as a stick!'},
+    {de:'schick',en:'chic / stylish',story:'👑 Schick = chic. Almost identical!'},
+    {de:'eilig',en:'in a hurry',story:'⚡ Ich habe es eilig = I am in a hurry. Eile = hurry!'},
+    {de:'berühmt',en:'famous',story:'🌟 Berühmt — "be-rühmt" = be-touched by everyone = famous!'},
+    {de:'cool',en:'cool',story:'😎 Cool is cool in German too.'},
+    {de:'doof',en:'silly / dumb',story:'🤪 Doof = silly, dumb, or stupid.'},
+    {de:'besonders',en:'especially',story:'Besonders means especially or particularly.'},
+    {de:'echt',en:'really / genuine',story:'Echt means really or genuine. "Echt?" = really?'},
+    {de:'ganz',en:'completely / quite',story:'Ganz means completely or quite.'},
+    {de:'hohe',en:'high',story:'Hohe Decken = high ceilings.'},
+    {de:'praktisch',en:'practical',story:'✔️ Praktisch is useful. Opposite: unpraktisch.'},
+    {de:'unpraktisch',en:'impractical',story:'❌ Un- makes it not practical — unpraktisch.'},
+    {de:'hell',en:'bright',story:'☀️ Hell means bright. Opposite: dunkel.'},
+    {de:'dunkel',en:'dark',story:'🌙 Dunkel = dark. The opposite of hell.'},
+    {de:'ruhig',en:'quiet',story:'🤫 Ruhig = quiet. Opposite: unruhig.'},
+    {de:'unruhig',en:'restless / noisy',story:'⚡ Unruhig = not calm. Opposite: ruhig.'},
+    {de:'sauber',en:'clean',story:'✨ Sauber = clean. Opposite: schmutzig.'},
+    {de:'schmutzig',en:'dirty',story:'🧽 Schmutzig = dirty. Opposite: sauber.'},
+    {de:'modern',en:'modern',story:'📱 Modern = modern. Opposite: unmodern.'},
+    {de:'unmodern',en:'old-fashioned',story:'🕰️ Unmodern = not modern. Opposite: modern.'},
+    {de:'ordentlich',en:'tidy',story:'🧹 Ordentlich means tidy. Opposite: chaotisch.'},
+    {de:'chaotisch',en:'chaotic',story:'💥 Chaotisch = chaotic. Opposite: ordentlich.'},
+    {de:'ungemütlich',en:'uncomfortable / not cosy',story:'🛋️ Ungemütlich = not cosy. Opposite: gemütlich.'},
+    {de:'modisch',en:'fashionable',story:'👗 Modisch = fashionable. Opposite: unmodisch.'},
+    {de:'unmodisch',en:'unfashionable',story:'🚫 Unmodisch = unfashionable.'},
+    {de:'elegant',en:'elegant',story:'🎩 Elegant = elegant. Opposite: langweilig in this pair.'},
+  ]},
+  {cat:'Verbs',level:'both',words:[
+    {de:'vergessen',en:'to forget',story:'🧠 ver- away + essen = eat. Brain ATE the memory!'},
+    {de:'vermissen',en:'to miss (someone)',story:'💔 ver- + miss. You MISS someone.'},
+    {de:'einladen',en:'to invite',story:'🎉 ein = in + laden = load. LOAD someone INTO your party!'},
+    {de:'anfangen',en:'to start/begin',story:'🚀 an = on + fangen = catch. Catch the ON button!'},
+    {de:'erzählen',en:'to tell a story',story:'📖 zählen = count. Counting events one by one.'},
+    {de:'anrufen',en:'to call (phone)',story:'📞 an + rufen = shout. You SHOUT at the phone!'},
+    {de:'komm rein',en:'come on in',story:'👣 Komm rein = come in here.'},
+    {de:'ausziehen',en:'to take off (clothes) / move out',story:'🧥 Ausziehen can mean take off clothes or move out.'},
+    {de:'klettern',en:'to climb',story:'🧗 Klettern = climb like a ladder or a tree.'},
+    {de:'angerufen',en:'called (phone)',story:'☎️ anrufen → angerufen. Past participle for called.'},
+    {de:'ziehen',en:'to pull / move out',story:'🏠 Ziehen → rhymes with "teen" — a teenager moves out!'},
+    {de:'zeigen',en:'to show',story:'👉 Zeigen — you point (zeig!) to show something.'},
+    {de:'aussehen',en:'to look like',story:'👀 aus = out + sehen = see. How you look OUT to others.'},
+    {de:'kennenlernen',en:'to get to know someone',story:'🤝 kennen = know + lernen = learn. Learn to know!'},
+    {de:'bewerben',en:'to apply (for a job)',story:'📄 Bewerbung = job application. The noun matches!'},
+    {de:'tragen',en:'to wear / carry',story:'👕 Tragen = carry AND wear. Both uses!'},
+    {de:'anprobieren',en:'to try on (clothes)',story:'👗 an = on + probieren = try. TRY something ON!'},
+    {de:'stehen (jemandem)',en:'to suit someone',story:'💁 Blau steht dir gut! Blue STANDS well on you.'},
+    {de:'passen',en:'to fit',story:'✅ Pass + en. It PASSES the size test = it fits!'},
+    {de:'einsteigen',en:'to get on (transport)',story:'🚌 ein = in + steigen = climb. Climb INTO the bus.'},
+    {de:'aussteigen',en:'to get off (transport)',story:'🚌 aus = out + steigen = climb. Climb OUT of the bus.'},
+    {de:'umziehen',en:'to move to a new apartment',story:'📦 um = around + ziehen = move. Move AROUND to a new place.'},
+  ]},
+
+  {cat:'Weather',level:'a13',words:[
+    {de:'Es ist sonnig.',en:'It\'s sunny.',story:'☀️ Sonne = sun. Sonnig = sunny. Simple!'},
+    {de:'Es regnet.',en:'It\'s raining.',story:'🌧️ Regen = rain. Regnet = rains.'},
+    {de:'Es schneit.',en:'It\'s snowing.',story:'❄️ Schnee = snow. Schneit = snows.'},
+    {de:'Es ist bewölkt.',en:'It\'s cloudy.',story:'☁️ Wolke = cloud. be-wölkt = be-clouded.'},
+    {de:'Es ist windig.',en:'It\'s windy.',story:'💨 Wind = wind. Windig = windy!'},
+    {de:'Es ist neblig.',en:'It\'s foggy.',story:'🌫️ Nebel = fog. Neblig = foggy.'},
+  ]},
+  {cat:'Clothing & fashion',level:'a13',words:[
+    {de:'der Anzug',en:'suit',story:'👔 An-ZUG = pull on. You pull on your suit.'},
+    {de:'die Bluse',en:'blouse',story:'👚 Sounds like "blouse" in English!'},
+    {de:'das Hemd',en:'shirt',story:'👕 A him (er) wearing his Hemd.'},
+    {de:'die Jacke',en:'jacket',story:'🧥 Jacke ≈ jacket. Almost identical!'},
+    {de:'das Kleid',en:'dress',story:'👗 Kleid → Clothing → D for Dress.'},
+    {de:'der Mantel',en:'coat',story:'🧣 Mantel sounds like "mantle" — a grand coat.'},
+    {de:'die Hose',en:'trousers',story:'👖 Hose → a tube for your legs!'},
+    {de:'der Rock',en:'skirt',story:'🪨 Your skirt rocks!'},
+    {de:'die Mütze',en:'beanie/hat',story:'🎓 Worn on your "mutz" (head).'},
+    {de:'der Stiefel',en:'boot',story:'👢 Stiff-leg → boots are stiff!'},
+    {de:'der Pullover',en:'sweater',story:'🧶 Pull + over your head!'},
+    {de:'der Hut',en:'hat',story:'🎩 Hut is a hat you wear on your head.'},
+    {de:'gebrauchte Kleidung',en:'used clothes',story:'Gebrauchte Kleidung = second-hand clothes.'},
+  ]},
+  {cat:'Compliments & reactions',level:'a13',words:[
+    {de:'Die Jacke steht Ihnen wirklich gut!',en:'That jacket really suits you!',story:'Response: Dankeschön! Das freut mich.'},
+    {de:'Das T-Shirt sieht super aus!',en:'The T-shirt looks great!',story:'Response: Danke schön! Das ist nett von Ihnen.'},
+    {de:'Die Schuhe passen perfekt zu Ihnen.',en:'The shoes suit you perfectly.',story:'Response: Vielen Dank!'},
+    {de:'Das Kleid gefällt mir, es sieht schick aus.',en:'I like the dress; it looks chic.',story:'Response: Danke. Es ist etwas teuer/zu teuer.'},
+    {de:'Sie sehen heute toll aus!',en:'You look great today!',story:'Response: Oh, danke! Das ist nett.'},
+  ]},
+  {cat:'Apartment & home',level:'a13',words:[
+    {de:'der Spiegel',en:'mirror',story:'🪞 Spiegelbild = mirror image.'},
+    {de:'der Vorhang',en:'curtain',story:'🪟 vor = before + hang. Hangs BEFORE the window.'},
+    {de:'die Decke',en:'blanket / ceiling',story:'🛏️ Decke covers you like a lid covers a pot.'},
+    {de:'der Schreibtisch',en:'desk',story:'✍️ Schreib = write + Tisch = table. Writing table!'},
+    {de:'das Regal',en:'shelf',story:'📚 Regal shelf. Books on the Regal.'},
+    {de:'der Boden',en:'floor',story:'⬇️ Ground/floor. You stand on the Boden.'},
+    {de:'der Flur',en:'corridor',story:'🚪 The "flow" of people through a hallway.'},
+    {de:'das Kissen',en:'pillow',story:'💤 You KISS your Kissen goodnight!'},
+    {de:'der Stecker',en:'plug',story:'A plug that fits into a socket.'},
+    {de:'das Lieblingszimmer',en:'favourite room',story:'Your favourite room in the house.'},
+    {de:'die Ecke',en:'corner',story:'Ecke = corner of the room or street.'},
+    {de:'im Regal',en:'on the shelf',story:'Im Regal = on the shelf. Use with Dativ.'},
+    {de:'Reihenhaus',en:'row house',story:'Reihenhaus = a house attached in a row.'},
+    {de:'Raum',en:'space / room',story:'Raum can mean space or a room.'},
+    {de:'Holz',en:'wood',story:'Holz is wood used for furniture and floors.'},
+    {de:'hohe Decken',en:'high ceilings',story:'Hohe Decken = high ceilings.'},
+    {de:'Aufzug',en:'lift / elevator',story:'Aufzug = elevator that goes up and down floors.'},
+    {de:'Kisten',en:'boxes',story:'Kisten are boxes for moving or storage.'},
+  ]},
+  {cat:'Travel & holiday',level:'a13',words:[
+    {de:'der Schlafsack',en:'sleeping bag',story:'🛏️ Schlaf = sleep + Sack = bag. Sleep-bag!'},
+    {de:'der Regenschirm',en:'umbrella',story:'☂️ Regen = rain + Schirm = screen. Rain-screen!'},
+    {de:'das Zelt',en:'tent',story:'⛺ Zelt sounds like shelter.'},
+    {de:'der Helm',en:'helmet',story:'⛑️ Helm ≈ helmet. Almost identical!'},
+    {de:'die Sonnencreme',en:'sunscreen',story:'☀️ Sonne = sun + Creme = cream.'},
+    {de:'die Sonnenbrille',en:'sunglasses',story:'😎 Sonne = sun + Brille = glasses.'},
+  ]},
+  {cat:'Jobs & careers',level:'a13',words:[
+    {de:'der Kellner/-in',en:'waiter / waitress',story:'🍽️ Waiters worked in cellar (Keller) kitchens.'},
+    {de:'der Architekt/-in',en:'architect',story:'🏛️ Almost identical to English "architect"!'},
+    {de:'der Erzieher/-in',en:'childcare worker',story:'👶 erziehen = to raise/educate children.'},
+    {de:'der Wohnungsmakler',en:'real estate agent',story:'Wohnungsmakler helps you find an apartment.'},
+    {de:'der Lebenslauf',en:'CV',story:'Lebenslauf = resume / CV for job applications.'},
+    {de:'die Stelle',en:'job / position',story:'Stelle = the job or position you apply for.'},
+    {de:'der Informatiker/-in',en:'IT specialist',story:'💻 Informatik = computer science.'},
+    {de:'der Reiseführer/-in',en:'tour guide',story:'🗺️ Reise = travel + Führer = guide.'},
+  ]},
+  {cat:'Perfect Tense verbs',level:'a13',words:[
+    {de:'hat gemacht',en:'has done/made',story:'✅ machen → ge+mach+t. Regular!'},
+    {de:'hat getrunken',en:'has drunk',story:'🥤 trinken → ge+trunk+en. Irregular!'},
+    {de:'hat gegessen',en:'has eaten',story:'🍽️ essen → ge+gess+en. Vowel change.'},
+    {de:'ist gefahren',en:'has driven/travelled',story:'🚗 fahren = movement → uses SEIN!'},
+    {de:'ist gegangen',en:'has gone',story:'🚶 gehen = movement → uses SEIN!'},
+    {de:'hat bezahlt',en:'has paid',story:'💳 bezahlen = nicht trennbar. No ge-!'},
+    {de:'hat angezogen',en:'has put on (clothes)',story:'👗 anziehen = trennbar: an+ge+zogen.'},
+  ]},
+];
+
+let activeFilter='all';
+function buildVocab(){
+  const filt=document.getElementById('vocab-filters');
+  if(!filt) return;
+  filt.innerHTML = '';
+  
+  const allBtn=document.createElement('button');
+  allBtn.className='filter-btn' + (activeFilter === 'all' ? ' active' : '');
+  allBtn.textContent='All';
+  allBtn.onclick=()=>filterVocab('all',allBtn);
+  filt.appendChild(allBtn);
+  
+  const relevantData = (currentLevel === 'both') ? vocabData : vocabData.filter(v => v.level === currentLevel);
+  const cats=[...new Set(relevantData.map(s=>s.cat))];
+  
+  cats.forEach(cat=>{
+    const btn=document.createElement('button');
+    btn.className='filter-btn' + (activeFilter === cat ? ' active' : '');
+    btn.textContent=cat;
+    btn.onclick=()=>filterVocab(cat,btn);
+    filt.appendChild(btn);
+  });
+  
+  if (activeFilter !== 'all' && !cats.includes(activeFilter)) {
+    activeFilter = 'all';
+    allBtn.classList.add('active');
+  }
+  
+  renderVocab(activeFilter);
+}
+function filterVocab(cat,btn){
+  activeFilter=cat;
+  document.querySelectorAll('#vocab-filters .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderVocab(cat);
+}
+function renderVocab(cat){
+  const cont=document.getElementById('vocab-container');
+  cont.innerHTML='';
+  vocabData.forEach(section=>{
+    const levelOk=(currentLevel==='both')||(section.level===currentLevel);
+    if(!levelOk)return;
+    if(cat!=='all'&&section.cat!==cat)return;
+    const label=document.createElement('div');
+    label.className='vocab-cat';
+    label.innerHTML=section.cat+' <span class="badge '+(section.level==='a12'?'badge-info':'badge-warn')+'" style="font-size:10px">'+section.level.toUpperCase()+'</span>';
+    cont.appendChild(label);
+    const grid=document.createElement('div');
+    grid.className='vocab-grid';
+    section.words.forEach(w=>{
+      const card=document.createElement('div');
+      card.className='vocab-card';
+      card.innerHTML=`<div class="vocab-de">${w.de}</div><div class="vocab-en">${w.en}</div><div class="vocab-story">${w.story}</div><div class="vocab-hint">tap for memory trick</div>`;
+      card.onclick=()=>{
+        card.classList.toggle('flipped');
+        card.querySelector('.vocab-hint').textContent=card.classList.contains('flipped')?'tap to hide':'tap for memory trick';
+      };
+      grid.appendChild(card);
+    });
+    cont.appendChild(grid);
+  });
+}
+
+// ── QUIZ DATA ────────────────────────────────────────
+const q12=[
+  {q:'How do you say "Drink a lot!" formally (Sie form)?',opts:['Trink viel!','Trinkt viel!','Trinken Sie viel!','Viel trinken!'],ans:2},
+  {q:'What case does "für" always require?',opts:['Nominativ','Akkusativ','Dativ','Genitiv'],ans:1},
+  {q:'"halb zwölf" in official time is:',opts:['12:30','11:30','12:15','11:45'],ans:1},
+  {q:'Fill in: Ich ___ heute noch einkaufen gehen.',opts:['muss','müssen','musst','müsst'],ans:0},
+  {q:'The Dativ form of "die" (feminine) is:',opts:['die','den','dem','der'],ans:3},
+  {q:'Wohin gehst du? → Ich gehe ___ Bank.',opts:['in der','aus der','zur','beim'],ans:2},
+  {q:'"vermissen" means:',opts:['to forget','to miss someone','to call','to invite'],ans:1},
+  {q:'"it hurts" for ONE body part:',opts:['tun weh','tut weh','tue weh','tust weh'],ans:1},
+  {q:'Imperativ (du) for "gehen" is:',opts:['Gehst!','Gehen!','Geh!','Geht!'],ans:2},
+  {q:'"pünktlich" means:',opts:['early','late','on time','often'],ans:2},
+  {q:'"viertel vor drei" in official time is:',opts:['3:15','3:45','2:45','2:15'],ans:2},
+  {q:'"vergessen" means:',opts:['to remember','to miss','to forget','to invite'],ans:2},
+  {q:'"I am sick" in German:',opts:['Ich habe krank','Ich bin krank','Ich tut weh','Ich habe Schmerzen'],ans:1},
+  {q:'Modal verb position in a German sentence:',opts:['Position 1','Position 2','End of sentence','After infinitive'],ans:1},
+  {q:'"hochladen" means:',opts:['download','boot up','upload','shut down'],ans:2},
+  {q:'"Wo bist du?" means:',opts:['Where are you going?','Where are you from?','Where are you?','When are you?'],ans:2},
+  {q:'Possessiveartikel for "wir":',opts:['euer','ihr','unser','sein'],ans:2},
+  {q:'"täglich" means:',opts:['weekly','monthly','daily','yearly'],ans:2},
+  {q:'Indirect speech: "Trinken Sie viel!" becomes:',opts:['Er sagt, ich trinke viel.','Der Arzt sagt, ich soll viel trinken.','Ich muss viel trinken.','Der Arzt trinkt viel.'],ans:1},
+  {q:'Complete: ___ Hause (I am at home)',opts:['nach','von zu','zu','beim'],ans:2},
+  {q:'Which word means "fork"?',opts:['der Löffel','das Messer','die Gabel','die Tasse'],ans:2},
+  {q:'For plural body parts hurting: Meine Augen ___ weh.',opts:['tut','tun','tue','tust'],ans:1},
+  {q:'"der Rücken" means:',opts:['stomach','back','knee','neck'],ans:1},
+  {q:'The question word for "how many" is:',opts:['Wie viel','Wie lange','Wie viele','Wieso'],ans:2},
+  {q:'"die Speisekarte" means:',opts:['the plate','the menu','the cup','the napkin'],ans:1},
+  {q:'Formal email greeting:',opts:['Liebe Sarah','Hallo Thomas','Sehr geehrte Frau Winter','Tschüss'],ans:2},
+  {q:'"Ich bitte um Entschuldigung" means:',opts:['I am early','I apologize','I am on time','I want to invite'],ans:1},
+];
+const q13=[
+  {q:'Wechselpräpositionen: "Wo?" (position) takes which case?',opts:['Nominativ','Akkusativ','Dativ','Genitiv'],ans:2},
+  {q:'Wechselpräpositionen: "Wohin?" (movement) takes which case?',opts:['Nominativ','Akkusativ','Dativ','Genitiv'],ans:1},
+  {q:'Perfekt formula:',opts:['sein+infinitiv','haben/sein + Partizip II','Modal + Partizip II','Präteritum + ge-'],ans:1},
+  {q:'Partizip II of "machen":',opts:['gemacht','macht','gemachet','gegemacht'],ans:0},
+  {q:'Partizip II of "trinken":',opts:['getrinkt','getrunkt','getrunken','getrinkten'],ans:2},
+  {q:'"fahren" in Perfekt:',opts:['hat gefahren','ist gefahren','hat gefährt','ist gefährt'],ans:1},
+  {q:'"studieren" in Perfekt (no ge-):',opts:['gestudiert','studiert','hat gestudiert','hat studiert'],ans:3},
+  {q:'"anziehen" (trennbar) Partizip II:',opts:['angezogen','gezogenan','geanzogen','anziehen'],ans:0},
+  {q:'"bezahlen" (nicht trennbar) Partizip II:',opts:['gebezahlt','bezahlt','bezgeahlt','bezahlen'],ans:1},
+  {q:'Masculine Akkusativ demonstrativ (dieser):',opts:['dieser','dieses','diese','diesen'],ans:3},
+  {q:'Fill in: Die Jacke ___ ihr nicht.',opts:['gefällt','liebt','hat','sieht'],ans:0},
+  {q:'Dativ pronoun for "sie" (she):',opts:['sie','ihr','ihre','ihnen'],ans:1},
+  {q:'"Man" in German means:',opts:['a man','indefinite person / one / people','many men','my man'],ans:1},
+  {q:'Time adverb at pos.1: verb goes to position:',opts:['1','2','3','end'],ans:1},
+  {q:'"denn" in a sentence means:',opts:['but','and','because','or'],ans:2},
+  {q:'"seit" is used with:',opts:['Akkusativ','Nominativ','Dativ','Genitiv'],ans:2},
+  {q:'Das Bild hängt ___ der Wand. (position, Dativ)',opts:['in','über','an','auf'],ans:2},
+  {q:'Ich hänge das Bild ___ die Wand. (movement, Akkusativ)',opts:['in','über','an','auf'],ans:2},
+  {q:'"Bilder malen" — welcher Beruf?',opts:['Kellner','Architekt','Künstler','Erzieher'],ans:2},
+  {q:'"Auf Wiederhören" is used when:',opts:['saying hello','ending a phone call','meeting someone','introducing yourself'],ans:1},
+  {q:'"anprobieren" means:',opts:['to put away','to try on','to take off','to buy'],ans:1},
+  {q:'Which word means "it\'s snowing"?',opts:['Es regnet.','Es schneit.','Es ist windig.','Es ist neblig.'],ans:1},
+  {q:'"gemütlich" means:',opts:['boring','ugly','cosy/comfortable','fashionable'],ans:2},
+  {q:'The ground floor in German is:',opts:['Im ersten Stock','Im Dachgeschoss','Im Erdgeschoss','Im Untergeschoss'],ans:2},
+  {q:'"passen" means:',opts:['to suit someone','to fit','to try on','to wear'],ans:1},
+  {q:'Halbformell closing phrase:',opts:['Mit freundlichen Grüßen','Liebe Grüße','Viele Grüße','Auf Wiedersehen'],ans:2},
+  {q:'"einsteigen" means:',opts:['to get off the bus','to transfer','to get on the bus','to drive'],ans:2},
+  {q:'"Die Arbeit macht Spaß" means:',opts:['The work is exhausting','The work is fun','The work pays well','The work is boring'],ans:1},
+  {q:'"günstig" means:',opts:['expensive','fashionable','cheap/affordable','ugly'],ans:2},
+];
+
+let quizMode='a12';
+let shuffled=[],qIdx=0,score=0,answered=false;
+
+function setQuizMode(mode,btn){
+  quizMode=mode;
+  document.querySelectorAll('.quiz-mode-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  restartQuiz();
+}
+function getBank(){
+  if(quizMode==='a12')return q12;
+  if(quizMode==='a13')return q13;
+  return [...q12,...q13];
+}
+function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
+function restartQuiz(){
+  document.getElementById('quiz-done').style.display='none';
+  shuffled=shuffle(getBank());
+  qIdx=0;score=0;answered=false;
+  showQuestion();
+}
+function showQuestion(){
+  const q=shuffled[qIdx];
+  const total=shuffled.length;
+  document.getElementById('quiz-question').textContent=q.q;
+  document.getElementById('quiz-score-text').innerHTML=`Question ${qIdx+1} of ${total} · Score: <span class="quiz-score-num" id="quiz-score-num">${score}</span>`;
+  document.getElementById('quiz-progress').style.width=((qIdx/total)*100)+'%';
+  const opts=document.getElementById('quiz-opts');
+  opts.innerHTML='';
+  const letters=['A','B','C','D'];
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='quiz-opt';
+    btn.innerHTML=`<span style="font-size:11px;font-weight:700;opacity:.5;min-width:14px">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick=()=>answerQ(i,btn,q.ans);
+    opts.appendChild(btn);
+  });
+  document.getElementById('quiz-feedback').classList.remove('show','correct','wrong');
+  document.getElementById('quiz-next').style.display='none';
+  document.getElementById('quiz-done').style.display='none';
+  answered=false;
+}
+function answerQ(i,btn,correct){
+  if(answered)return;answered=true;
+  const fb=document.getElementById('quiz-feedback');
+  const allBtns=document.querySelectorAll('.quiz-opt');
+  allBtns[correct].classList.add('correct');
+  if(i===correct){
+    score++;
+    fb.textContent='✅ Richtig! Well done!';
+    fb.className='feedback show correct';
+  } else {
+    btn.classList.add('wrong');
+    const correctText=allBtns[correct].querySelector('span:last-child').textContent;
+    fb.textContent='❌ Falsch! Correct answer: '+correctText;
+    fb.className='feedback show wrong';
+  }
+  allBtns.forEach(b=>b.disabled=true);
+  document.getElementById('quiz-next').style.display='block';
+}
+function nextQuestion(){
+  qIdx++;
+  if(qIdx>=shuffled.length){
+    document.getElementById('quiz-question').textContent='';
+    document.getElementById('quiz-opts').innerHTML='';
+    document.getElementById('quiz-feedback').classList.remove('show');
+    document.getElementById('quiz-next').style.display='none';
+    const pct=Math.round((score/shuffled.length)*100);
+    document.getElementById('final-score').textContent=score+' / '+shuffled.length;
+    let msg='';
+    if(pct>=85)msg='🎉 Ausgezeichnet! You\'re exam-ready!';
+    else if(pct>=65)msg='👍 Gut gemacht! Review the grammar section once more.';
+    else msg='📚 Weiterstudieren! Go through the cheat sheet and try again.';
+    document.getElementById('final-msg').textContent=msg+' ('+pct+'%)';
+    document.getElementById('quiz-done').style.display='block';
+    document.getElementById('quiz-progress').style.width='100%';
+    return;
+  }
+  showQuestion();
+}
+
+// init
+buildVocab();
+updateGrammarIndex();
+</script>
+</body>
+</html>
